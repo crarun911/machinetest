@@ -31,6 +31,8 @@ object AppModule {
     fun provideEmployeeDirectoryApi(retrofit: Retrofit):EmployeeDirectory=
         retrofit.create(EmployeeDirectory::class.java)
 
+    @Singleton
+    @Provides
     fun provideOfflineData(app:Application):EmployeeDirectoryDatabase=
         Room.databaseBuilder(app,EmployeeDirectoryDatabase::class.java,"employee_databse")
             .build()
