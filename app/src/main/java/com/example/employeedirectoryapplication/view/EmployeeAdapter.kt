@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.employeedirectoryapplication.api.EmployeeItem
 import com.example.employeedirectoryapplication.databinding.EmployeeItemBinding
 
-class EmployeeAdapter:androidx.recyclerview.widget.ListAdapter<EmployeeItem,EmployeeAdapter.EmployeeViewHolder>(EmployeeDiffutil()) {
+class EmployeeAdapter(private val itemClick: onItemClick):androidx.recyclerview.widget.ListAdapter<EmployeeItem,EmployeeAdapter.EmployeeViewHolder>(EmployeeDiffutil()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {
@@ -25,8 +25,20 @@ class EmployeeAdapter:androidx.recyclerview.widget.ListAdapter<EmployeeItem,Empl
 
     }
 
-    class EmployeeViewHolder(private val binding: EmployeeItemBinding):
+    inner class EmployeeViewHolder(private val binding: EmployeeItemBinding):
         RecyclerView.ViewHolder(binding.root){
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                val item = getItem(position)
+                itemClick.onItemClick(item)
+            }
+
+
+        }
+
+
+
             fun bind(employeeItem: EmployeeItem){
                 binding.apply {
                     Glide.with(itemView)
@@ -48,6 +60,10 @@ class EmployeeAdapter:androidx.recyclerview.widget.ListAdapter<EmployeeItem,Empl
             oldItem==newItem
 
 
+    }
+
+    interface onItemClick {
+        fun onItemClick(item: EmployeeItem)
     }
 
 
